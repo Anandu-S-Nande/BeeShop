@@ -140,3 +140,17 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
     
 }
+
+#smtp configuration
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'anandusnande@gmail.com'
+EMAIL_HOST_PASSWORD = 'anandu6633'
+EMAIL_USE_TLS = True
+
+
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'rathan.kumar049@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Giveme99$'
+# EMAIL_USE_TLS = True
