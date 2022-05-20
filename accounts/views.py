@@ -1,9 +1,10 @@
 from base64 import urlsafe_b64decode
 from email import message
 from email.message import EmailMessage
-import http
 from django.http import HttpResponse
 from django.shortcuts import render , redirect
+
+from carts.models import Cart, CartItem
 from .models import Account
 #from accounts.models import Account
 from .forms import RegistrationForm
@@ -17,6 +18,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
+
+from carts.views import _cart_id
+from carts.models import Cart,CartItem
 
 
 # Create your views here.
@@ -63,6 +67,22 @@ def login(request):
         user = auth.authenticate(email=email, password= password)
 
         if user is not None:
+            try:
+               print('entering inside try block')
+               cart = Cart.objects.get(cart_id=_cart_id(request))
+               is_cart_item_exists = CartItem.objects.filter(Cart=cart).exists()
+               print(is_cart_item_exists)
+               if is_cart_item_exists:
+                   cart_item = CartItem.objects.filter(Cart=cart)
+                   print(cart_item)
+                   
+
+                   for item in cart_item:
+                       item.user = user
+                       item.save()
+            except:
+                print('entering iniside except block')
+                pass
             auth.login(request, user)
             messages.success(request, 'you are now logged in.')
             return redirect('dashboard')
@@ -70,6 +90,46 @@ def login(request):
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
     return render(request,'accounts/login.html')
+
+# def login_otp(request):
+#     if request.method=='POST':
+#         mobile='7736441096'
+#         mobile_number = request.POST['phone_number']
+#         # if mobile==phone_number:
+#         if Account.objects.filter(phone_number=mobile_number).exists():
+#             user=Account.objects.get(phone_number=mobile_number)
+#             # Your Account SID from twilio.com/console
+#             account_sid = "ACc1160d4e274829b9628aa099d817661d"
+#             # Your Auth Token from twilio.com/console
+#             auth_token  = "3a6ce70fadb92b3e94660d4ea21eaa42"
+
+#             client = Client(account_sid, auth_token)
+#             global otp
+#             otp = str(random.randint(1000,9999))
+#             message = client.messages.create(
+#                 to="+91".join(str(mobile_number)), 
+#                 from_="+19207106849",
+#                 body="Hello there! Your Login OTP is"+otp)
+#             messages.success(request,'OTP has been sent to 7736441096 & enter OTP')
+#             return render (request, 'accounts/login_otp1.html')
+
+#         else:
+#             messages.info(request,'The phone number is not registered')
+#             return render (request, 'login_otp.html')
+#     return render (request, 'accounts/login_otp.html')
+
+# def login_otp1(request):
+#     if request.method=='POST':
+#         user = Account.objects.get(phone_number= 7736441096)
+#         otpvalue = request.POST['otp']
+#         if otpvalue == otp:
+#             auth.login(request,user)
+#             messages.success(request,'You are logged in')
+#             return redirect('/')
+#         else:   
+#             messages.error(request,'Invalid OTP')
+#             return redirect('login_otp1')
+#     return render(request, 'accounts/login_otp1.html')
 
 
 @login_required(login_url = 'login')
