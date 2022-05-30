@@ -10,10 +10,12 @@
     <!-- ============================ COMPONENT 1 ================================= -->
     {% if not cart_items %}
 
+    <img class="logo" width="190px" height="200px"  src="{% static './images/shopping-cart.png' %}" >
     <h2 class="text-center">Your Shopping Cart is Empty</h2>
     <br>
     <div class="text-center">
-        <a href="{% url 'store' %}" class="btn btn-primary">Continue Shopping</a>
+        
+        <a href="{% url 'store' %}" class="btn btn-warning">Continue Shopping</a>
     </div>
 
     {% else %}
@@ -106,7 +108,7 @@
                 <p class="text-center mb-3">
                     <img src="{% static './images/misc/payments.png' %}" height="26">
                 </p>
-                <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Checkout </a>
+                <a href="{% url 'checkout' %}" class="btn btn-warning btn-block"> Checkout </a>
                 <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
             </div> <!-- card-body.// -->
             </div> <!-- card.// -->

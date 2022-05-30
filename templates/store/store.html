@@ -29,7 +29,7 @@
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
                     <i class="icon-control fa fa-chevron-down"></i>
-                    <h6 class="title">Categories</h6>
+                    <h6 class="title text-warning">Categories</h6>
                 </a>
             </header>
             <div class="filter-content collapse show" id="collapse_1" style="">
@@ -49,7 +49,7 @@
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
                     <i class="icon-control fa fa-chevron-down"></i>
-                    <h6 class="title">Sizes </h6>
+                    <h6 class="title text-warning">Sizes </h6>
                 </a>
             </header>
             <div class="filter-content collapse show" id="collapse_4" style="">
@@ -81,7 +81,7 @@
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
                     <i class="icon-control fa fa-chevron-down"></i>
-                    <h6 class="title">Price range </h6>
+                    <h6 class="title text-warning">Price range </h6>
                 </a>
             </header>
             <div class="filter-content collapse show" id="collapse_3" style="">
@@ -114,7 +114,7 @@
                         </select>
                     </div>
                     </div> <!-- form-row.// -->
-                    <button class="btn btn-block btn-primary">Apply</button>
+                    <button class="btn btn-block btn-warning">Apply</button>
                 </div><!-- card-body.// -->
             </div>
         </article> <!-- filter-group .// -->
@@ -148,7 +148,7 @@
                             <span class="price">Rs : {{product.price}}</span>
                         </div> <!-- price-wrap.// -->
                     </div>
-                    <a href="{{ product.get_url }}" class="btn btn-block btn-primary">View Details </a>
+                    <a href="{{ product.get_url }}" class="btn btn-block btn-warning">View Details </a>
                 </figcaption>
             </figure>
         </div> <!-- col.// -->
@@ -160,14 +160,15 @@
        {%endif%}
     </div> <!-- row end.// -->
     
-    
-    <nav class="mt-4" aria-label="Page navigation sample">
+    <!-- -----pagination---------------->
+
+    <nav class="mt-4 " aria-label="Page navigation sample">
      {%  if products.has_other_pages %}
        <ul class="pagination">
         {% if products.has_previous %}
         <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}">Previous</a></li>
         {% else %}
-        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item disabled "><a class="page-link" href="#">Previous</a></li>
         {% endif %}
 
         {% for i in products.paginator.page_range %}
