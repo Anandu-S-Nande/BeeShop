@@ -10,13 +10,25 @@
     <!-- ============================ COMPONENT 1 ================================= -->
     {% if not cart_items %}
 
-    <img class="logo" width="190px" height="200px"  src="{% static './images/shopping-cart.png' %}" >
+    <!-- <div>
+        <img class="logo" style="margin-left:30rem;" width="190px" height="200px"  src="{% static './images/shopping-cart.png' %}" > 
+    </div>
     <h2 class="text-center">Your Shopping Cart is Empty</h2>
     <br>
     <div class="text-center">
         
         <a href="{% url 'store' %}" class="btn btn-warning">Continue Shopping</a>
-    </div>
+    </div> -->
+
+
+    <div class="col-sm-12 empty-cart-cls text-center"> 
+        <img src="{% static  '/images/shop.jpg'  %}" width="130" height="130" class="img-fluid mb-4 mr-3" alt="dchjdc"> 
+        <h3><strong>Your Wishlist is Empty</strong></h3> 
+        <h4>Add something to make me happy :)</h4> 
+        <a href="/" class="btn btn-warning cart-btn-transform m-3" data-abc="true">continue shopping</a> 
+         
+        
+       </div>
 
     {% else %}
     <div class="row">

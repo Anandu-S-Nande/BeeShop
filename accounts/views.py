@@ -2,13 +2,13 @@ from base64 import urlsafe_b64decode
 from email import message
 from email.message import EmailMessage
 from django.http import HttpResponse
-from django.shortcuts import render , redirect
+from django.shortcuts import get_object_or_404, render , redirect
 from orders.models import Order
 
 from carts.models import Cart, CartItem
-from .models import Account
+from .models import Account, UserProfile
 #from accounts.models import Account
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserForm, UserProfileForm
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 
@@ -60,6 +60,9 @@ def register(request):
         'form' : form,
     }
     return render(request,'accounts/register.html', context)
+
+
+
 
 def login(request):
     if request.method == 'POST':
@@ -176,6 +179,8 @@ def logout(request):
     return redirect('login')
 
 
+
+
 def activate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -193,6 +198,8 @@ def activate(request, uidb64, token):
         return redirect('register')
 
 
+
+
 @login_required(login_url = 'login')
 def dashboard(request):
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
@@ -201,6 +208,8 @@ def dashboard(request):
         'orders_count' : orders_count,
     }
     return render(request, 'accounts/dashboard.html', context)
+
+
 
 
 def forgotPassword(request):
@@ -229,6 +238,9 @@ def forgotPassword(request):
             return redirect('forgotPassword')
     return render(request, 'accounts/forgotPassword.html')
 
+
+
+
 def resetpassword_validate(request, uidb64, token ):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -243,6 +255,9 @@ def resetpassword_validate(request, uidb64, token ):
     else:
         messages.error(request, 'this link has been expired')
         return redirect('login')
+
+
+
 
 def resetPassword(request):
     if request.method == 'POST':
@@ -262,9 +277,67 @@ def resetPassword(request):
     else:
         return render(request, 'accounts/resetPassword.html')
 
+
+
+
+@login_required(login_url='login')
 def my_orders(request):
     orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
     context = {
         'orders' : orders,
     }
     return render(request, 'accounts/my_orders.html', context)
+
+
+
+
+
+@login_required(login_url='login')
+def edit_profile(request):
+    userprofile = get_object_or_404(UserProfile, user=request.user)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated.')
+            return redirect('edit_profile')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = UserProfileForm(instance=userprofile)
+    context = {
+        'user_form' : user_form,
+        'profile_form' : profile_form,
+        'userprofile' : userprofile,
+    }
+    return render(request, 'accounts/edit_profile.html', context)
+
+
+
+
+
+
+@login_required(login_url='login')
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = Account.objects.get(username__iexact=request.user.username)
+
+        if new_password == confirm_password:
+            success = user.check_password(current_password)
+            if success:
+                user.set_password(new_password)
+                user.save()
+                messages.success(request, 'password update successfully.')
+                return redirect('change_password')
+            else:
+                messages.error(request, 'please enter the valid current password')
+                return redirect('change_password')
+        else:
+            messages.error(request, 'password does not match!')
+            return redirect('change_password')
+    return render(request, 'accounts/change_password.html')
