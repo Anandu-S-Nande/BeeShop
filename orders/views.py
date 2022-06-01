@@ -12,6 +12,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
 
+
 #Create your views here.
 def payments(request):
     print("hgfgd")
@@ -19,7 +20,7 @@ def payments(request):
         body = json.loads(request.body)
         print(body)
     order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
-        
+
 
     payment = Payment(
         user = request.user,
