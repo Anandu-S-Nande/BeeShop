@@ -61,8 +61,7 @@
                                                                 class="img-sm"></div>
                                                         <figcaption class="info">
                                                             <a href="{{ cart_item.product.get_url }}"
-                                                                class="title text-dark">{{
-                                                                cart_item.product.product_name }}</a>
+                                                                class="title text-dark">{{ cart_item.product.product_name }}</a>
                                                             <p class="text-muted small">
                                                                 {% if cart_item.variations.all %}
                                                                 {% for item in cart_item.variations.all %}
@@ -133,15 +132,15 @@
                     <div class="card-body">
                         <dl class="dlist-align">
                             <dt>Total price:</dt>
-                            <dd class="text-right">Rs : {{ total }}</dd>
+                            <dd class="text-right">Rs : {{ total | floatformat:2 }}</dd>
                         </dl>
                         <dl class="dlist-align">
                             <dt>Tax:</dt>
-                            <dd class="text-right">Rs : {{ tax }}</dd>
+                            <dd class="text-right">Rs : {{ tax | floatformat:2 }}</dd>
                         </dl>
                         <dl class="dlist-align">
                             <dt>Grand Total:</dt>
-                            <dd class="text-right text-dark b"><strong>Rs : {{ grand_total }}</strong></dd>
+                            <dd class="text-right text-dark b"><strong>Rs : {{ grand_total | floatformat:2 }}</strong></dd>
                         </dl>
                         <hr>
                         <p class="text-center mb-3">
@@ -186,7 +185,7 @@
     
 
 
-      var amount = "{{grand_total}}"
+      var amount = "{{total_in_usd | floatformat:2}}"
       var url = "{% url 'payments' %}"
       var csrftoken = getCookie('csrftoken');
       var orderID = "{{order.order_number}}"
@@ -212,8 +211,7 @@
                 // Successful capture! For demo purposes:
                 console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
                 var transaction = orderData.purchase_units[0].payments.captures[0];
-                //alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
-                sendData();
+                alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
                 function sendData(){
                     fetch(url, {
                         method : "POST",
@@ -222,10 +220,10 @@
                             "X-CSRFToken" : csrftoken,
                         },
                         body : JSON.stringify({
-                            orderID : orderID,
-                            transID : details.id,
-                            payment_method : payment_method,
-                            status : details.status,
+                            "orderID" : orderID,
+                            "transID" : transaction.id,
+                            "payment_method" : payment_method,
+                            "status" : transaction.status,
                         }),
                     })
                     .then((response) => response.json())
@@ -233,7 +231,7 @@
                         window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID;
                     });
                 }
-
+                sendData();
 
                 // Replace the above to show a success message within this page, e.g.
                 // const element = document.getElementById('paypal-button-container');
