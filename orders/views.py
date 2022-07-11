@@ -15,7 +15,6 @@ from django.template.loader import render_to_string
 
 #Create your views here.
 def payments(request):
-    print("hgfgd")
     if request.method == "POST":
         print(request)
         print(request.headers)
@@ -88,7 +87,7 @@ def payments(request):
         total = 0
         quantity = 0
         cart_items = CartItem.objects.filter(user=request.user)
-        order = Order.objects.get(user=request.user, is_ordered=False)
+        order = Order.objects.filter(user=request.user, is_ordered=False).first()
         for cart_item in cart_items:
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
@@ -98,7 +97,7 @@ def payments(request):
         context = {
             'order' : order,
             'cart_items' : cart_items,
-            'total':total,
+            'total' : total,
             'grand_total' : grand_total,
             'tax': tax,
             'total_in_usd':total_in_usd

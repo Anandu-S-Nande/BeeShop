@@ -43,7 +43,7 @@ def register(request):
                 # Your Account SID from twilio.com/console
                 account_sid = "AC8a237c07f6964f370346fb9197f2e220"
                 # Your Auth Token from twilio.com/console
-                auth_token  = "7b4c9c993c2703833014dd77ee46161b"
+                auth_token  = "3348ed1ccf47177d38b9f2f846745b9f"
                 current_site = get_current_site(request)
                 client = Client(account_sid, auth_token)
                 message = client.messages.create(
