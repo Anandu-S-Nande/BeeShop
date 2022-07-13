@@ -10152,4 +10152,15 @@ h3 {
   }
 }
 
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #d69503;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
 /*# sourceMappingURL=bootstrap.css.map */

@@ -28,7 +28,7 @@
         <article class="filter-group">
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
-                    <i class="icon-control fa fa-chevron-down"></i>
+                    <!-- <i class="icon-control fa fa-chevron-down"></i> -----scroll down btn-->
                     <h6 class="title text-warning">Categories</h6>
                 </a>
             </header>
@@ -80,7 +80,8 @@
         <article class="filter-group">
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
-                    <i class="icon-control fa fa-chevron-down"></i>
+                    <!-- <i class="icon-control fa fa-chevron-down "></i> -->
+                    <i class="bi bi-arrow-down-circle-fill"></i>
                     <h6 class="title text-warning">Price range </h6>
                 </a>
             </header>
@@ -168,12 +169,12 @@
         {% if products.has_previous %}
         <li class="page-item"><a class="page-link" href="?page={{products.previous_page_number}}">Previous</a></li>
         {% else %}
-        <li class="page-item disabled "><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
         {% endif %}
 
         {% for i in products.paginator.page_range %}
           {% if products.number == i %}
-             <li class="page-item active"><a class="page-link" href="#">{{i}}</a></li>
+             <li class="page-item active" style="border-color: #e38202;"><a class="page-link bg-warning" href="#">{{i}}</a></li>
           {% else %}
              <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
           {% endif %}
@@ -182,7 +183,7 @@
         {% if products.has_next %}
           <li class="page-item"><a class="page-link" href="?page={{products.next_page_number}}">Next</a></li>
         {% else %}
-          <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+          <li class="page-item disabled text-warning"><a class="page-link" href="#">Next</a></li>
         {% endif %}
       </ul>
        {% endif %}
